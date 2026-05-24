@@ -8,10 +8,14 @@ Seamlessly track attendance, assess performance, and provide feedback. <br>
 Access records, view marks, and communicate effortlessly.
 </h3>
 
-<br>
-[Youtube Video](https://youtu.be/ol650KwQkgY?si=rKcboqSv3n-e4UbC)
-<br><br>
-[LinkedIn](https://www.linkedin.com/in/yogndr/)
+<p>
+  <a href="https://youtu.be/ol650KwQkgY?si=rKcboqSv3n-e4UbC">Youtube Video</a>
+</p>
+
+<p>
+  <a href="https://www.linkedin.com/in/yogndrr/">LinkedIn</a>
+</p>
+
 
 # About
 
@@ -19,7 +23,7 @@ The School Management System is a web-based application built using the MERN (Mo
 
 ## Features
 
-- **User Roles:** The system supports three user roles: Admin, Teacher, and Student. Each role has specific functionalities and access levels.
+- **Account Types:** The system supports three account types: Admin, Teacher, and Student. Each account type has specific functionalities and access levels.
 
 - **Admin Dashboard:** Administrators can add new students and teachers, create classes and subjects, manage user accounts, and oversee system settings.
 
@@ -41,152 +45,196 @@ The School Management System is a web-based application built using the MERN (Mo
 
 # Installation
 
-```sh
+Clone the project:
+
+```
 git clone https://github.com/Yogndrr/MERN-School-Management-System.git
 ```
-Open 2 terminals in separate windows/tabs.
 
-Terminal 1: Setting Up Backend 
-```sh
+There are three branches in this repository. Each serves a different purpose.
+
+`main` contains the work that reflects my current standards. I am rebuilding the project architecture here with updated patterns, cleaner structure, and better practices than the original version.
+
+`community-version` collects community contributions and external PRs. It stays separate from main while I rebuild the core.
+
+`legacy-version` contains the same code shown in the YouTube tutorial. If you came from the video and want the exact version demonstrated there, switch to this branch after cloning.
+Open a terminal and paste this command to switch to the `legacy-version` branch. But if you want to try the latest one then you can stay in the main branch.
+
+```
+git checkout legacy-version
+```
+
+Open two terminals.
+
+Backend setup:
+
+```
 cd backend
 npm install
+```
+
+Create a .env file in the backend folder. Add the following:
+
+```
+MONGO_URL = mongodb://127.0.0.1/smsproject
+
+SECRET_KEY = 'secret123key'
+```
+
+Fill MONGO_URL using the instructions below. SECRET_KEY is any random string.
+
+Start the backend:
+
+```
 npm start
 ```
 
-Create a file called .env in the backend folder.
-Inside it write this :
+Frontend setup:
 
-```sh
-MONGO_URL = mongodb://127.0.0.1/school
 ```
-If you are using MongoDB Compass you can use this database link but if you are using MongoDB Atlas then instead of this link write your own database link.
-
-Terminal 2: Setting Up Frontend
-```sh
 cd frontend
 npm install
-npm start
 ```
-Now, navigate to `localhost:3000` in your browser. 
-The Backend API will be running at `localhost:5000`.
-<br>
-# Error Solution
 
-You might encounter an error while signing up, either a network error or a loading error that goes on indefinitely.
+Create a .env file in the frontend folder and add:
 
-To resolve it:
+```
+REACT_APP_BASE_URL=http://localhost:5000
+```
 
-1. Navigate to the `frontend > .env` file.
+If a .env file already exists and the line is commented out, remove the comment.
 
-2. Uncomment the first line. After that, terminate the frontend terminal. Open a new terminal and execute the following commands:
-```sh
-cd frontend
+```
 npm start
 ```
 
-After completing these steps, try signing up again. If the issue persists, follow these additional steps to resolve it:
+Frontend runs at localhost:3000. Backend runs at localhost:5000.
 
-1. Navigate to the `frontend > src > redux > userRelated > userHandle.js` file.
+# MONGO_URL instructions
 
-2. Add the following line after the import statements:
+Use one of these two methods depending on whether you want a local development database or a cloud database.
 
-```javascript
-const REACT_APP_BASE_URL = "http://localhost:5000";
+## Option 1 — Local MongoDB
+
+You need two components: the MongoDB server and Compass.
+
+Install MongoDB Community Server from <a href="https://mongodb.com/try/download/community">mongodb.com/try/download/community</a>. This install includes the mongod server. Install Compass from <a href="https://mongodb.com/try/download/compass">mongodb.com/try/download/compass</a>..
+
+Start the MongoDB service. On Windows or macOS the installer usually sets it to run automatically. If it is not running, you can start it manually:
+
+```
+mongod
 ```
 
-3. Replace all instances of `process.env.REACT_APP_BASE_URL` with `REACT_APP_BASE_URL`.
+Open Compass. Connect using:
 
-**IMPORTANT:** Repeat the same process for all other files with "Handle" in their names.
-
-For example, in the `redux` folder, there are other folders like `userRelated`. In the `teacherRelated` folder, you'll find a file named `teacherHandle`. Similarly, other folders contain files with "Handle" in their names. Make sure to update these files as well.
-
-The issue arises because the `.env` file in the frontend may not work for all users, while it works for me.
-
-Additionally:
-
-- When testing the project, start by signing up rather than logging in as a guest or using regular login if you haven't created an account yet.
-  
-  To use guest mode, navigate to `LoginPage.js` and provide an email and password from a project already created in the system. This simplifies the login process, and after creating your account, you can use your credentials.
-
-These steps should resolve the network error in the frontend. If the issue persists, feel free to contact me for further assistance.
-
-# Delete Feature Not Working Solution
-
-When attempting to delete items, you may encounter a popup message stating, "Sorry, the delete function has been disabled for now." This message appears because I have disabled the delete function on my live site to prevent guests from deleting items. If you wish to enable the delete feature, please follow these steps:
-
-1. Navigate to the `frontend > src > redux > userRelated > userHandle.js` file.
-
-2. If you haven't made any changes, you should find the `deleteUser` function at line 71. It may be commented out. It might look like this:
-
-```javascript
-// export const deleteUser = (id, address) => async (dispatch) => {
-//     dispatch(getRequest());
-
-//     try {
-//         const result = await axios.delete(`${process.env.REACT_APP_BASE_URL}/${address}/${id}`);
-//         if (result.data.message) {
-//             dispatch(getFailed(result.data.message));
-//         } else {
-//             dispatch(getDeleteSuccess());
-//         }
-//     } catch (error) {
-//         dispatch(getError(error));
-//     }
-// }
+```
+mongodb://127.0.0.1:27017/yourdbname
 ```
 
-3. Uncomment above `deleteUser` function and comment out this `deleteUser` function that is currently running from line 87 to line 90 :
+Replace yourdbname with any name. Use that full connection string as your MONGO_URL.
 
-```javascript
-export const deleteUser = (id, address) => async (dispatch) => {
-    dispatch(getRequest());
-    dispatch(getFailed("Sorry the delete function has been disabled for now."));
-}
+## Option 2 — MongoDB Atlas (cloud)
+
+Create an Atlas account at <a href="https://mongodb.com/atlas">mongodb.com/atlas</a> and create a free cluster.
+
+In the cluster page, select:
+
+Database → Connect → Connect your application
+
+Atlas shows you a connection string:
+
+```
+mongodb+srv://<user>:<password>@<cluster-url>/<dbname>?retryWrites=true&w=majority
 ```
 
-4. If you have previously modified the code, you may find the `deleteUser` functions at different lines. In this case, uncomment the original code and comment out the current one.
+Replace the placeholders. Use that full string as your MONGO_URL.
 
-5. Next, navigate to the `frontend > src > pages > admin` folder. Here, you will find different folders suffixed with "Related". Open each folder and locate files prefixed with "Show".
+Use Atlas if you plan to deploy the project.
 
-6. Open each file with "Show" as a prefix and search for a function named `deleteHandler`. For example:
-   
-```javascript
-const deleteHandler = (deleteID, address) => {
-  console.log(deleteID);
-  console.log(address);
-  setMessage("Sorry, the delete function has been disabled for now.");
-  setShowPopup(true);
-  // dispatch(deleteUser(deleteID, address))
-  //   .then(() => {
-  //     dispatch(getAllSclasses(adminID, "Sclass"));
-  //   })
-}
-```
+# Branch selection
 
-7. This is an example snippet from `ShowClasses`. In other files with "Show" as a prefix, it may differ.
+If you are learning from the YouTube video and want the same project the tutorial was based on, use legacy-version.
 
-8. Uncomment the commented-out code inside the `deleteHandler` function and comment out the existing code. It should resemble this:
+If you want the original project but also want to apply new changes yourself, stay on legacy-version and modify it as needed.
 
-```javascript
-const deleteHandler = (deleteID, address) => {
-  // console.log(deleteID);
-  // console.log(address);
-  // setMessage("Sorry, the delete function has been disabled for now.");
-  // setShowPopup(true);
-  dispatch(deleteUser(deleteID, address))
-    .then(() => {
-      dispatch(getAllSclasses(adminID, "Sclass"));
-    })
-}
-```
+If you want the updated architecture, use main. This is under active development and contains major improvements.
 
-9. Repeat these steps for every other file. In some cases, the `deleteHandler` function may also be found in files prefixed with "View". Check those files and repeat the same process.
-
-If the issue persists, feel free to contact me for further assistance.
-
-Don't forget to leave a star for this project if you found the solution helpful. Thank you!
+If you want to contribute, use community-version. All external PRs land there.
 
 # Deployment
-* Render - server side
-* Netlify - client side
 
+There are multiple ways to deploy the project. Use any combination depending on how you prefer to manage the client and server.
+
+## Deploying the backend
+
+### Render
+
+Render works well for Express-based APIs and requires almost no infrastructure setup.
+
+1. Push your code to GitHub.
+2. Create a new Web Service in Render.
+3. Select your backend folder as the root.
+4. Set the build command to:
+
+```
+npm install
+```
+
+5. Set the start command to:
+
+```
+npm start
+```
+
+6. Add the required environment variables from your .env file (MONGO_URL and SECRET_KEY).
+
+Render automatically redeploys on every push.
+
+## Deploying the frontend
+
+### Netlify
+
+Netlify builds and serves the React application.
+
+Steps:
+
+1. Push your frontend folder to GitHub.
+2. Create a new Netlify project.
+3. Set the build command:
+
+```
+npm run build
+```
+
+4. Set the publish directory:
+
+```
+build
+```
+
+5. Add an environment variable if needed for the API endpoint:
+
+```
+REACT_APP_BASE_URL=https://your-backend-url
+```
+
+Netlify auto-builds on every push.
+
+### Vercel
+
+Vercel deploys React-based frontends easily. Same build command. Same publish directory.
+
+## Connecting frontend and backend
+
+After deploying both sides, set the frontend environment variable to point to your backend URL. For example:
+
+```
+REACT_APP_BASE_URL=https://your-backend.onrender.com
+```
+
+Rebuild the frontend when deploying to Netlify or Vercel.
+
+# Notes
+
+The legacy-version branch remains available for anyone who needs the original two-year-old tutorial code. The main branch will continue to evolve as I rebuild the project's architecture using the practices I use today. The community-version branch is available for contributions without affecting the core redesign.
