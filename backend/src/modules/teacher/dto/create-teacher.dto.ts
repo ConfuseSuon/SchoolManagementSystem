@@ -1,18 +1,17 @@
-import { IsArray, IsEmail, IsMongoId, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
+import { IsArray, IsMongoId, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateTeacherDto {
   @IsString()
   @IsNotEmpty()
   name: string;
 
-  @IsEmail()
-  @IsNotEmpty()
-  email: string;
+  @IsString()
+  @IsOptional()
+  phone?: string;
 
   @IsString()
-  @IsNotEmpty()
-  @MinLength(6)
-  password: string;
+  @IsOptional()
+  gender?: string;
 
   @IsArray()
   @IsMongoId({ each: true })
@@ -23,4 +22,4 @@ export class CreateTeacherDto {
   @IsMongoId({ each: true })
   @IsOptional()
   subjectIds?: string[];
-}
+}

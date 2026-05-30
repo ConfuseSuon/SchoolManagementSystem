@@ -33,7 +33,7 @@ export function MyClassesPage() {
   const classesList = Array.from(classMap.values());
 
   return (
-    <Box sx={{ maxWidth: 800, mx: 'auto' }}>
+    <Box>
       <Box sx={{ mb: 3 }}>
         <Typography variant="h5" sx={{ fontWeight: 700, color: 'text.primary', letterSpacing: '-0.5px' }}>
           My Classes

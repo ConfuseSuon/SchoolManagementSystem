@@ -8,15 +8,6 @@ export class Teacher {
   @Prop({ required: true })
   name: string;
 
-  @Prop({ required: true, unique: true })
-  email: string;
-
-  @Prop({ required: true })
-  password: string;
-
-  @Prop({ required: true, default: 'Teacher' })
-  role: string;
-
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'School', required: true })
   schoolId: mongoose.Types.ObjectId;
 
@@ -25,6 +16,12 @@ export class Teacher {
 
   @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Subject' }] })
   subjectIds: mongoose.Types.ObjectId[];
+
+  @Prop({ required: false })
+  phone?: string;
+
+  @Prop({ required: false })
+  gender?: string;
 }
 
 export const TeacherSchema = SchemaFactory.createForClass(Teacher);

@@ -8,6 +8,8 @@ import { staffLoginSchema } from '../types';
 import type { StaffLoginForm as StaffLoginType } from '../types';
 import { useAuthStore, isValidJwtPayload } from '@/stores/auth-store';
 import { queryClient } from '@/lib/query-client';
+import { api } from '@/lib/axios';
+import { AsyncSearchSelect } from '@/components/AsyncSearchSelect';
 
 export function StaffLoginForm() {
   const navigate = useNavigate();
@@ -16,7 +18,7 @@ export function StaffLoginForm() {
 
   const form = useForm<StaffLoginType>({
     resolver: zodResolver(staffLoginSchema),
-    defaultValues: { role: 'Teacher', email: '', password: '' },
+    defaultValues: { role: 'Teacher', email: '', password: '', schoolId: '' },
   });
 
   const onSubmit = (data: StaffLoginType) => {
@@ -63,6 +65,18 @@ export function StaffLoginForm() {
             <MenuItem value="Student">Student</MenuItem>
           </TextField>
         )}
+      />
+
+      <AsyncSearchSelect
+        name="schoolId"
+        control={form.control}
+        label="Search your school"
+        placeholder="Type at least 3 characters to search..."
+        fetchFn={async (query) => {
+          const res = await api.get<any>(`/schools/search?q=${encodeURIComponent(query)}`);
+          return res.data;
+        }}
+        getOptionLabel={(option: any) => option.name}
       />
 
       <Controller

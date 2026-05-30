@@ -6,10 +6,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtStrategy } from './jwt.strategy';
-import { Admin, AdminSchema } from '../admin/admin.schema';
 import { School, SchoolSchema } from '../school/school.schema';
-import { Teacher, TeacherSchema } from '../teacher/teacher.schema';
-import { Student, StudentSchema } from '../student/student.schema';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
@@ -23,11 +21,9 @@ import { Student, StudentSchema } from '../student/student.schema';
       inject: [ConfigService],
     }),
     MongooseModule.forFeature([
-      { name: Admin.name, schema: AdminSchema },
       { name: School.name, schema: SchoolSchema },
-      { name: Teacher.name, schema: TeacherSchema },
-      { name: Student.name, schema: StudentSchema },
     ]),
+    UserModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],

@@ -49,4 +49,10 @@ export class StudentController {
   remove(@Param('id') id: string, @CurrentUser() user: JwtPayload) {
     return this.studentService.remove(id, user.schoolId);
   }
+
+  @Roles('Admin')
+  @Post(':id/login')
+  createLogin(@Param('id') id: string, @Body() dto: any, @CurrentUser() user: JwtPayload) {
+    return this.studentService.createLogin(id, dto, user.schoolId);
+  }
 }

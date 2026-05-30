@@ -7,15 +7,6 @@ export type AdminDocument = HydratedDocument<Admin>;
 export class Admin {
   @Prop({ required: true })
   name: string;
-
-  @Prop({ required: true, unique: true })
-  email: string;
-
-  @Prop({ required: true })
-  password: string;
-
-  @Prop({ required: true, default: 'Admin' })
-  role: string;
 }
 
 export const AdminSchema = SchemaFactory.createForClass(Admin);

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { TextField, Button, Box, MenuItem, Alert } from '@mui/material';
+import { TextField, Button, Box, Alert } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 import { useAdminStepOne, useAdminStepTwo } from '../mutations';
@@ -9,6 +9,7 @@ import { adminStepOneSchema, adminStepTwoSchema } from '../types';
 import type { AdminStepOneForm, AdminStepTwoForm } from '../types';
 import { useAuthStore, isValidJwtPayload } from '@/stores/auth-store';
 import { queryClient } from '@/lib/query-client';
+import { AsyncSearchSelect } from '@/components/AsyncSearchSelect';
 
 interface SchoolData {
   _id: string;
@@ -112,26 +113,18 @@ function AdminStepTwoForm({ tempToken, schools }: { tempToken: string; schools: 
     <Box component="form" onSubmit={form.handleSubmit(onSubmit)} sx={styles.form}>
       {error && <Alert severity="error" sx={styles.alert}>{error.response?.data?.message || 'Login failed'}</Alert>}
 
-      <Controller
+      <AsyncSearchSelect
         name="schoolId"
         control={form.control}
-        render={({ field, fieldState }) => (
-          <TextField
-            {...field}
-            select
-            label="Select School"
-            fullWidth
-            error={!!fieldState.error}
-            helperText={fieldState.error?.message}
-            sx={styles.input}
-          >
-            {schools.map((s) => (
-              <MenuItem key={s._id} value={s._id}>
-                {s.name}
-              </MenuItem>
-            ))}
-          </TextField>
-        )}
+        label="Select School"
+        placeholder="Type to search your school..."
+        minChars={0}
+        fetchFn={async (query) => {
+          return schools.filter((s) =>
+            s.name.toLowerCase().includes(query.toLowerCase())
+          );
+        }}
+        getOptionLabel={(option) => option.name}
       />
       
       <Button type="submit" variant="contained" color="secondary" fullWidth size="large" disabled={stepTwoMutation.isPending}>

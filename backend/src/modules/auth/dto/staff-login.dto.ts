@@ -1,4 +1,4 @@
-import { IsEmail, IsIn, IsNotEmpty, IsString } from 'class-validator';
+import { IsEmail, IsIn, IsNotEmpty, IsString, IsMongoId } from 'class-validator';
 
 export class StaffLoginDto {
   @IsEmail()
@@ -13,4 +13,8 @@ export class StaffLoginDto {
   @IsIn(['Student', 'Teacher'])
   @IsNotEmpty()
   role: string;
+
+  @IsMongoId()
+  @IsNotEmpty()
+  schoolId: string;
 }

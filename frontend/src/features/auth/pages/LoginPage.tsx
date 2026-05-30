@@ -9,36 +9,89 @@ export function LoginPage() {
 
   return (
     <Box sx={styles.container}>
-      <Tabs value={tab} onChange={(_, v) => setTab(v)} variant="fullWidth" sx={styles.tabs}>
-        <Tab label="Admin" />
-        <Tab label="Staff & Student" />
-      </Tabs>
-      <Box sx={styles.tabPanel}>
-        {tab === 0 && (
-          <Box>
-            <AdminLoginForm />
-            <Box sx={styles.linkBox}>
-              <Typography variant="body2">
-                Need an account? <Link component={RouterLink} to="/auth/register" color="secondary">Create an account</Link>
-              </Typography>
-            </Box>
-          </Box>
-        )}
-        {tab === 1 && <StaffLoginForm />}
+      <Box sx={styles.header}>
+        <Typography variant="h5" sx={styles.title}>
+          Welcome back
+        </Typography>
+        <Typography variant="body2" sx={styles.subtitle}>
+          Sign in to your account
+        </Typography>
       </Box>
+
+      <Tabs
+        value={tab}
+        onChange={(_, v) => setTab(v)}
+        variant="fullWidth"
+        indicatorColor="secondary"
+        textColor="inherit"
+        sx={styles.tabs}
+      >
+        <Tab label="Admin" sx={styles.tab} />
+        <Tab label="Teacher & Student" sx={styles.tab} />
+      </Tabs>
+
+      {tab === 0 && (
+        <>
+          <AdminLoginForm />
+          <Box sx={styles.linkBox}>
+            <Typography variant="body2" sx={styles.linkText}>
+              Need an account?{' '}
+              <Link component={RouterLink} to="/auth/register" sx={styles.registerLink}>
+                Create an account
+              </Link>
+            </Typography>
+          </Box>
+        </>
+      )}
+      {tab === 1 && <StaffLoginForm />}
     </Box>
   );
 }
 
 const styles = {
-  container: { width: '100%' },
+  container: {
+    width: '100%',
+  },
+  header: {
+    mb: 4,
+    textAlign: 'center',
+  },
+  title: {
+    fontWeight: 700,
+    letterSpacing: '-0.5px',
+    color: 'text.primary',
+    mb: 1,
+    mt: 5,
+  },
+  subtitle: {
+    color: 'text.secondary',
+  },
   tabs: {
     mb: 3,
     borderBottom: 1,
     borderColor: 'divider',
   },
-  linkBox: { textAlign: 'center', mt: 3 },
-  tabPanel: {
-    mt: 2,
+  tab: {
+    textTransform: 'none',
+    fontWeight: 500,
+    color: 'text.secondary',
+    '&.Mui-selected': {
+      fontWeight: 700,
+    },
+  },
+  linkBox: {
+    textAlign: 'center',
+    mt: 3,
+  },
+  linkText: {
+    color: 'text.secondary',
+  },
+  registerLink: {
+    color: 'secondary.main',
+    fontWeight: 600,
+    textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
   },
 } as const;

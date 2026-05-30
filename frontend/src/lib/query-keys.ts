@@ -42,4 +42,23 @@ export const queryKeys = {
   teacherProfile: {
     current: () => ['teacher-profile'] as const,
   },
+  academicYears: {
+    all: ['academic-years'] as const,
+    list: () => [...queryKeys.academicYears.all, 'list'] as const,
+  },
+  enrollments: {
+    all: ['enrollments'] as const,
+    list: (params?: any) => [...queryKeys.enrollments.all, 'list', params] as const,
+  },
+  attendance: {
+    all: ['attendance'] as const,
+    list: (params?: any) => [...queryKeys.attendance.all, 'list', params] as const,
+    summary: (params?: any) => [...queryKeys.attendance.all, 'summary', params] as const,
+  },
+  exams: {
+    all: ['exams'] as const,
+    list: (params?: any) => [...queryKeys.exams.all, 'list', params] as const,
+    results: (examId: string) => [...queryKeys.exams.all, 'results', examId] as const,
+    studentResults: (params?: any) => [...queryKeys.exams.all, 'student-results', params] as const,
+  },
 };

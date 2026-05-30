@@ -8,23 +8,17 @@ export class Student {
   @Prop({ required: true })
   name: string;
 
-  @Prop({ required: true, unique: true })
-  email: string;
-
-  @Prop({ required: true })
-  password: string;
-
-  @Prop({ required: true, default: 'Student' })
-  role: string;
-
   @Prop({ required: false })
   rollNumber?: string;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'School', required: true })
   schoolId: mongoose.Types.ObjectId;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'AcademicClass', required: true })
-  classId: mongoose.Types.ObjectId;
+  @Prop({ required: false })
+  phone?: string;
+
+  @Prop({ required: false })
+  gender?: string;
 }
 
 export const StudentSchema = SchemaFactory.createForClass(Student);

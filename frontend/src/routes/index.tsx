@@ -25,6 +25,17 @@ import { MyComplainsPage } from '../features/student/pages/MyComplainsPage';
 import { PublicRoute } from './PublicRoute';
 import { AdminDashboard } from '../features/admin/pages/AdminDashboard';
 import { LandingPage } from '@/features/landing/pages/LandingPage';
+import { ProfilePage } from '@/features/profile/pages/ProfilePage';
+
+import { AcademicYearsPage } from '../features/admin/pages/AcademicYearsPage';
+import { AttendancePage } from '../features/admin/pages/AttendancePage';
+import { ExamsPage } from '../features/admin/pages/ExamsPage';
+
+import { MarkAttendancePage } from '../features/teacher/pages/MarkAttendancePage';
+import { ExamResultsPage } from '../features/teacher/pages/ExamResultsPage';
+
+import { AttendanceSummaryPage } from '../features/student/pages/AttendanceSummaryPage';
+import { MyResultsPage } from '../features/student/pages/MyResultsPage';
 
 interface ProtectedRouteProps {
   allowedRoles: string[];
@@ -64,12 +75,16 @@ export function AppRoutes() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminDashboard />} />
           <Route path="schools" element={<SchoolsPage />} />
+          <Route path="academic-years" element={<AcademicYearsPage />} />
           <Route path="classes" element={<ClassesPage />} />
           <Route path="subjects" element={<SubjectsPage />} />
           <Route path="teachers" element={<TeachersPage />} />
           <Route path="students" element={<StudentsPage />} />
+          <Route path="attendance" element={<AttendancePage />} />
+          <Route path="exams" element={<ExamsPage />} />
           <Route path="notices" element={<NoticesPage />} />
           <Route path="complains" element={<ComplainsPage />} />
+          <Route path="profile" element={<ProfilePage />} />
         </Route>
       </Route>
 
@@ -78,14 +93,20 @@ export function AppRoutes() {
           <Route index element={<TeacherDashboard />} />
           <Route path="subjects" element={<MySubjectsPage />} />
           <Route path="classes" element={<MyClassesPage />} />
+          <Route path="attendance" element={<MarkAttendancePage />} />
+          <Route path="exams" element={<ExamResultsPage />} />
+          <Route path="profile" element={<ProfilePage />} />
         </Route>
       </Route>
 
       <Route element={<ProtectedRoute allowedRoles={['Student']} />}>
         <Route path="/student" element={<StudentLayout />}>
           <Route index element={<StudentDashboard />} />
+          <Route path="attendance" element={<AttendanceSummaryPage />} />
+          <Route path="results" element={<MyResultsPage />} />
           <Route path="notices" element={<MyNoticesPage />} />
           <Route path="complaints" element={<MyComplainsPage />} />
+          <Route path="profile" element={<ProfilePage />} />
         </Route>
       </Route>
 

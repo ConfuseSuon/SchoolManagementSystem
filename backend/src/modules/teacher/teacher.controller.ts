@@ -45,4 +45,9 @@ export class TeacherController {
   remove(@Param('id') id: string, @CurrentUser() user: JwtPayload) {
     return this.teacherService.remove(id, user.schoolId);
   }
+
+  @Post(':id/login')
+  createLogin(@Param('id') id: string, @Body() dto: any, @CurrentUser() user: JwtPayload) {
+    return this.teacherService.createLogin(id, dto, user.schoolId);
+  }
 }

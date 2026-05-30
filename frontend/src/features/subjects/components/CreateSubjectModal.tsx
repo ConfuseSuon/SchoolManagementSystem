@@ -1,10 +1,11 @@
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box, MenuItem } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Box } from '@mui/material';
 import { useCreateSubject } from '../api/create';
 import { createSubjectSchema } from '../types';
 import type { CreateSubjectForm } from '../types';
 import { useClasses, useTeachers } from '@/lib/shared-queries';
+import { AsyncSearchSelect } from '@/components/AsyncSearchSelect';
 
 interface Props {
   open: boolean;
@@ -49,28 +50,33 @@ export function CreateSubjectModal({ open, onClose }: Props) {
               <TextField {...field} label="Subject Code (Optional)" fullWidth error={!!fieldState.error} helperText={fieldState.error?.message} />
             )}
           />
-          <Controller
+          <AsyncSearchSelect
             name="classId"
             control={form.control}
-            render={({ field, fieldState }) => (
-              <TextField {...field} select label="Class" fullWidth error={!!fieldState.error} helperText={fieldState.error?.message}>
-                {classes?.data?.map((c) => (
-                  <MenuItem key={c._id} value={c._id}>{c.name}</MenuItem>
-                ))}
-              </TextField>
-            )}
+            label="Class"
+            placeholder="Type to search class..."
+            minChars={0}
+            fetchFn={async (query) => {
+              const list = classes?.data || [];
+              return list.filter((c: any) =>
+                c.name.toLowerCase().includes(query.toLowerCase())
+              );
+            }}
+            getOptionLabel={(option: any) => option.name}
           />
-          <Controller
+          <AsyncSearchSelect
             name="teacherId"
             control={form.control}
-            render={({ field, fieldState }) => (
-              <TextField {...field} select label="Teacher (Optional)" fullWidth error={!!fieldState.error} helperText={fieldState.error?.message}>
-                <MenuItem value="">None</MenuItem>
-                {teachers?.data?.map((t) => (
-                  <MenuItem key={t._id} value={t._id}>{t.name}</MenuItem>
-                ))}
-              </TextField>
-            )}
+            label="Teacher (Optional)"
+            placeholder="Type to search teacher..."
+            minChars={0}
+            fetchFn={async (query) => {
+              const list = teachers?.data || [];
+              return list.filter((t: any) =>
+                t.name.toLowerCase().includes(query.toLowerCase())
+              );
+            }}
+            getOptionLabel={(option: any) => option.name}
           />
         </DialogContent>
         <DialogActions>

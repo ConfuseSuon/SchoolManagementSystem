@@ -13,6 +13,11 @@ import { NoticeModule } from './modules/notice/notice.module';
 import { ComplainModule } from './modules/complain/complain.module';
 import { SharedModule } from './modules/shared/shared.module';
 import { StatModule } from './modules/stat/stat.module';
+import { UserModule } from './modules/user/user.module';
+import { AcademicYearModule } from './modules/academic-year/academic-year.module';
+import { EnrollmentModule } from './modules/enrollment/enrollment.module';
+import { AttendanceModule } from './modules/attendance/attendance.module';
+import { ExamModule } from './modules/exam/exam.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 
@@ -40,6 +45,11 @@ import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
     NoticeModule,
     ComplainModule,
     StatModule,
+    UserModule,
+    AcademicYearModule,
+    EnrollmentModule,
+    AttendanceModule,
+    ExamModule,
   ],
   controllers: [],
   providers: [

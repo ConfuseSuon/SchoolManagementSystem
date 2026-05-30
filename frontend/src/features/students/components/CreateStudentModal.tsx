@@ -5,6 +5,7 @@ import { useCreateStudent } from '../api/create';
 import { createStudentSchema } from '../types';
 import type { CreateStudentForm } from '../types';
 import { useClasses } from '@/lib/shared-queries';
+import { AsyncSearchSelect } from '@/components/AsyncSearchSelect';
 
 export function CreateStudentModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const createMutation = useCreateStudent();
@@ -12,7 +13,7 @@ export function CreateStudentModal({ open, onClose }: { open: boolean; onClose: 
   
   const form = useForm<CreateStudentForm>({ 
     resolver: zodResolver(createStudentSchema), 
-    defaultValues: { name: '', email: '', password: '', classId: '', rollNumber: '' } 
+    defaultValues: { name: '', phone: '', gender: '', classId: '', rollNumber: '' } 
   });
 
   const onSubmit = (data: CreateStudentForm) => createMutation.mutate(data, { onSuccess: () => { form.reset(); onClose(); } });
@@ -23,14 +24,29 @@ export function CreateStudentModal({ open, onClose }: { open: boolean; onClose: 
       <Box component="form" onSubmit={form.handleSubmit(onSubmit)}>
         <DialogContent sx={styles.content}>
           <Controller name="name" control={form.control} render={({ field, fieldState }) => <TextField {...field} label="Name" fullWidth error={!!fieldState.error} helperText={fieldState.error?.message} />} />
-          <Controller name="email" control={form.control} render={({ field, fieldState }) => <TextField {...field} label="Email" type="email" fullWidth error={!!fieldState.error} helperText={fieldState.error?.message} />} />
-          <Controller name="password" control={form.control} render={({ field, fieldState }) => <TextField {...field} label="Password" type="password" fullWidth error={!!fieldState.error} helperText={fieldState.error?.message} />} />
-          <Controller name="rollNumber" control={form.control} render={({ field, fieldState }) => <TextField {...field} label="Roll Number (Optional)" fullWidth error={!!fieldState.error} helperText={fieldState.error?.message} />} />
-          <Controller name="classId" control={form.control} render={({ field, fieldState }) => (
-            <TextField {...field} select label="Class" fullWidth error={!!fieldState.error} helperText={fieldState.error?.message}>
-              {classes?.data?.map(c => <MenuItem key={c._id} value={c._id}>{c.name}</MenuItem>)}
+          <Controller name="phone" control={form.control} render={({ field, fieldState }) => <TextField {...field} label="Phone" fullWidth error={!!fieldState.error} helperText={fieldState.error?.message} />} />
+          <Controller name="gender" control={form.control} render={({ field, fieldState }) => (
+            <TextField {...field} select label="Gender" fullWidth error={!!fieldState.error} helperText={fieldState.error?.message}>
+              <MenuItem value="Male">Male</MenuItem>
+              <MenuItem value="Female">Female</MenuItem>
+              <MenuItem value="Other">Other</MenuItem>
             </TextField>
           )} />
+          <Controller name="rollNumber" control={form.control} render={({ field, fieldState }) => <TextField {...field} label="Roll Number (Optional)" fullWidth error={!!fieldState.error} helperText={fieldState.error?.message} />} />
+          <AsyncSearchSelect
+            name="classId"
+            control={form.control}
+            label="Class"
+            placeholder="Type to search class..."
+            minChars={0}
+            fetchFn={async (query) => {
+              const list = classes?.data || [];
+              return list.filter((c: any) =>
+                c.name.toLowerCase().includes(query.toLowerCase())
+              );
+            }}
+            getOptionLabel={(option: any) => option.name}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={onClose}>Cancel</Button>
@@ -42,3 +58,4 @@ export function CreateStudentModal({ open, onClose }: { open: boolean; onClose: 
 }
 
 const styles = { content: { display: 'flex', flexDirection: 'column', gap: 2, pt: 1 } } as const;
+

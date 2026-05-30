@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useAuthStore } from '../stores/auth-store';
+import { useUiStore } from '../stores/ui-store';
 
 export const api = axios.create({
   baseURL: '/api',
@@ -34,7 +35,11 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       useAuthStore.getState().logout();
+    } else {
+      const msg = error.response?.data?.message || error.message || 'An unexpected error occurred';
+      useUiStore.getState().showToast(msg, 'error');
     }
     return Promise.reject(error);
   }
 );
+

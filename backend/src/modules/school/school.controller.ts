@@ -5,12 +5,21 @@ import { UpdateSchoolDto } from './dto/update-school.dto';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { CurrentUser, type JwtPayload } from '../../common/decorators/current-user.decorator';
+import { Public } from '../../common/decorators/public.decorator';
 
 @Controller('schools')
 @UseGuards(RolesGuard)
 @Roles('Admin')
 export class SchoolController {
   constructor(private readonly schoolService: SchoolService) {}
+
+  @Public()
+  @Get('search')
+  async search(@Query('q') q: string, @Query('limit') limit?: string) {
+    const l = parseInt(limit || '10', 10);
+    const schools = await this.schoolService.search(q, l);
+    return { data: schools, message: 'Schools fetched successfully' };
+  }
 
   @Post()
   create(@Body() createSchoolDto: CreateSchoolDto, @CurrentUser() user: JwtPayload) {

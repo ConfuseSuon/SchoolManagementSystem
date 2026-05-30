@@ -13,6 +13,7 @@ export const staffLoginSchema = z.object({
   role: z.enum(['Teacher', 'Student']),
   email: z.string().email('Invalid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
+  schoolId: z.string().min(1, 'Please select a school'),
 });
 
 export type AdminStepOneForm = z.infer<typeof adminStepOneSchema>;
